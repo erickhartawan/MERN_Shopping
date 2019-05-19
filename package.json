@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "install-client":"npm i --prefix client",
+    "install-client": "npm i --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
@@ -14,9 +14,11 @@
   "author": "Erick Hartawan",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.3",
+    "bcryptjs": "^2.4.3",
     "concurrently": "^4.1.0",
+    "config": "^3.1.0",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.19"
   },
   "devDependencies": {
