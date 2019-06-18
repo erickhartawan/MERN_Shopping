@@ -1,5 +1,5 @@
 
-import {GET_ITEMS, DELETE_ITEM, ADD_ITEM,SET_LOADING} from '../actions/types.js'
+import {GET_ITEMS, DELETE_ITEM, ADD_ITEM,ITEMS_LOADING} from '../actions/types.js'
 
 const initState ={
   items:[],
@@ -24,7 +24,7 @@ export default function itemReducer(state = initState , action){
         ...state,
         items:[action.payload ,...state.items]
       }
-      case SET_LOADING:
+      case ITEMS_LOADING:
       return {
         ...state,
         loading: true

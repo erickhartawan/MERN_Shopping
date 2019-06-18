@@ -1,5 +1,5 @@
 import axios from "axios"
-import {GET_ITEMS, DELETE_ITEM, ADD_ITEM,SET_LOADING} from '../actions/types.js';
+import {GET_ITEMS, DELETE_ITEM, ADD_ITEM,ITEMS_LOADING} from '../actions/types.js';
 
 export const getItems = () => dispatch => {
   dispatch(setItemsLoading());
@@ -37,6 +37,6 @@ export const deleteItem = id => dispatch => {
 
 export const setItemsLoading = () => {
   return {
-    type: SET_LOADING
+    type: ITEMS_LOADING
   }
 }
