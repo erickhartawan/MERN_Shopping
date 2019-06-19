@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, { Component } from "react";
 import {
   Button,
   Modal,
@@ -10,112 +10,132 @@ import {
   Input,
   NavLink,
   Alert
-} from 'reactstrap'
+} from "reactstrap";
 
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-//import { register } from '../../store/actions/authActions';
-import { clearErrors } from '../../store/actions/errorActions';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { register } from "../../store/actions/authActions";
+import { clearErrors } from "../../store/actions/errorActions";
 
 class RegisterModal extends Component {
   state = {
     modal: false,
-    name:'',
-    email:'',
-    password:'',
+    name: "",
+    email: "",
+    password: "",
     msg: null
   };
 
-  static propTypes ={
+  componentDidUpdate(prevProps) {
+    const { error, isAuthenticated } = this.props;
+    if (error !== prevProps.error) {
+      //check for register error
+      if (error.id == "REGISTER_FAIL") {
+        this.setState({ msg: error.msg.msg });
+      } else {
+        this.setState({ msg: null });
+      }
+    }
+    if (this.state.modal) {
+      if (isAuthenticated) {
+        this.toggle();
+      }
+    }
+  }
+
+  static propTypes = {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
-    //register: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired
   };
 
   // if authed close modal
-
-
   toggle = () => {
     //Clear Errors
     this.props.clearErrors();
     this.setState({
       modal: !this.state.modal
-    })
-  }
-  onSubmit = (e) => {
+    });
+  };
+  onSubmit = e => {
     e.preventDefault();
-    //close modal
-    this.toggle();
-  }
+    const { name, email, password } = this.state;
+
+    //create new user object
+    const newUser = {
+      name,
+      email,
+      password
+    };
+
+    this.props.register(newUser);
+  };
 
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value })
-  }
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   render() {
     return (
       <div>
-        <NavLink onClick={this.toggle} href='#'>
+        <NavLink onClick={this.toggle} href="#">
           Register
         </NavLink>
 
-        <Modal
-          isOpen={this.state.modal}
-          toggle={this.toogle}
-        >
-        <ModalHeader toggle={this.toggle}>Register</ModalHeader>
-        <ModalBody>
-          <Form onSubmit={this.onSubmit}>
-            <FormGroup>
-              <Label for="name">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Name"
-                className='mb-3'
-                onChange={this.onChange}
+        <Modal isOpen={this.state.modal} toggle={this.toogle}>
+          <ModalHeader toggle={this.toggle}>Register</ModalHeader>
+          {this.state.msg ? (
+            <Alert color="danger"> {this.state.msg} </Alert>
+          ) : null}
+          <ModalBody>
+            <Form onSubmit={this.onSubmit}>
+              <FormGroup>
+                <Label for="name">Name</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Name"
+                  className="mb-3"
+                  onChange={this.onChange}
                 />
-              <Label for="email">email</Label>
-              <Input
-                type="text"
-                name="email"
-                id="email"
-                placeholder="Email"
-                className='mb-3'
-                onChange={this.onChange}
+                <Label for="email">email</Label>
+                <Input
+                  type="text"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                  className="mb-3"
+                  onChange={this.onChange}
                 />
-              <Label for="password">Passworc</Label>
-              <Input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="enter 6 char password"
-                className='mb-3'
-                onChange={this.onChange}
+                <Label for="password">Passworc</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="enter 6 char password"
+                  className="mb-3"
+                  onChange={this.onChange}
                 />
-                <Button
-                  color="dark"
-                  style={{marginTop:"3rem"}}
-                  block
-                  >Register
+                <Button color="dark" style={{ marginTop: "3rem" }} block>
+                  Register
                 </Button>
-            </FormGroup>
-          </Form>
-        </ModalBody>
+              </FormGroup>
+            </Form>
+          </ModalBody>
         </Modal>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error
-})
+});
 
 export default connect(
   mapStateToProps,
-  { clearErrors }
+  { register, clearErrors }
 )(RegisterModal);

@@ -1,29 +1,30 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import { Container } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css';
-import AppNavbar from "./components/AppNavbar"
-import ShoppingList from "./components/ShoppingList"
-import ItemModal from './components/ItemModal'
-import store from "./store/store"
-import { loadUser } from './store/actions/authActions'
+import React, { Component } from "react";
+import { Provider } from "react-redux";
+import { Container } from "reactstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import AppNavbar from "./components/AppNavbar";
+import ShoppingList from "./components/ShoppingList";
+import ItemModal from "./components/ItemModal";
+
+import store from "./store/store";
+import { loadUser } from "./store/actions/authActions";
 
 class App extends Component {
-  componentDidMount(){
+  componentDidMount() {
     store.dispatch(loadUser());
   }
 
   render() {
     return (
       <Provider store={store}>
-      <div className="App">
-        <AppNavbar />
-        <Container>
-          <ItemModal />
-          <ShoppingList />
-        </Container>
-      </div>
+        <div className="App">
+          <AppNavbar />
+          <Container>
+            <ItemModal />
+            <ShoppingList />
+          </Container>
+        </div>
       </Provider>
     );
   }
